@@ -1,0 +1,42 @@
+---
+title: "Objective_1"
+author: "Diva Medina Camp"
+date: "2023-04-06"
+output: html_document
+---
+
+# Get csv data from web git 
+
+```
+covid_confirmations <- read.csv("https://raw.githubusercontent.com/DivaMC/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", stringsAsFactors=FALSE)
+
+covid_deaths <- read.csv("https://raw.githubusercontent.com/DivaMC/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", stringsAsFactors=FALSE)
+
+covid_recoveries <- read.csv("https://raw.githubusercontent.com/DivaMC/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv", stringsAsFactors=FALSE)
+
+```
+
+# Find greatest number of deaths on first day
+
+```
+for(i in covid_deaths$X1.22.20) {
+  if(i > 0) {
+    print(i)
+  }
+}
+
+max(covid_deaths$X1.22.20)
+covid_deaths$Province.State[which.max(covid_deaths$X1.22.20)]
+
+```
+
+# Find greatest number of confirmed cases on first day
+
+```
+max(covid_confirmations$X1.22.20)
+covid_confirmations$Province.State[which.max(covid_confirmations$X1.22.20)]
+
+```
+
+
+

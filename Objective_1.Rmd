@@ -37,19 +37,6 @@ first_city_deaths <- covid_deaths$Province.State[which.max(covid_deaths$X1.22.20
 max(covid_confirmations$X1.22.20)
 first_city_confirmations <- covid_confirmations$Province.State[which.max(covid_confirmations$X1.22.20)]
 
-y=-Inf
-z=0
-for (i in covid_confirmations$X1.22.20) {
-  x=i
-  if(x>y){
-    y=i
-    # if2
-    if(y!=Inf){z=i}
-}
-else{y=Inf}
-}
-print(paste0("maximum number is:" , z))
-
 ```
 
 # Find and print origin city 

@@ -26,7 +26,7 @@ for(i in covid_deaths$X1.22.20) {
 }
 
 max(covid_deaths$X1.22.20)
-covid_deaths$Province.State[which.max(covid_deaths$X1.22.20)]
+first_city_deaths <- covid_deaths$Province.State[which.max(covid_deaths$X1.22.20)]
 
 ```
 
@@ -34,9 +34,17 @@ covid_deaths$Province.State[which.max(covid_deaths$X1.22.20)]
 
 ```
 max(covid_confirmations$X1.22.20)
-covid_confirmations$Province.State[which.max(covid_confirmations$X1.22.20)]
+first_city_confirmations <- covid_confirmations$Province.State[which.max(covid_confirmations$X1.22.20)]
 
 ```
 
+# Find origin city 
 
+```
+if (first_city_deaths == first_city_confirmations) {
+  covid_city_origin <- first_city_confirmations
+}
+print(covid_city_origin)
+
+```
 

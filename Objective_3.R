@@ -9,12 +9,12 @@ area_df <- data.frame(Long = covid_confirmations$Long[which(covid_confirmations$
 
 area_df_matrix <- as.matrix(area_df)
 
-# Hubei Coordinates
+# First City Coordinates
 
 First_City_Coords <- data.frame(Long = covid_confirmations$Long[first_city_confirmation_index]
                            ,Lat = covid_confirmations$Lat[first_city_confirmation_index]) 
 
-First_City_Coords_matrix <- as.matrix(Hubei_Coords)
+First_City_Coords_matrix <- as.matrix(First_City_Coords)
 
 # Find distance between cities
 # Use function distm

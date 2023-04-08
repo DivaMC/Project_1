@@ -26,6 +26,10 @@ death_df <- death_df[order(-death_df$Deaths),]
 top_5_confirmed <- head(confirmed_df, 5)
 top_5_deaths <- head(death_df, 5)
 
+# Convert the data frames into tables using the kable function
+library(knitr)
+kable(top_5_confirmed)
+kable(top_5_deaths)
 
 
 

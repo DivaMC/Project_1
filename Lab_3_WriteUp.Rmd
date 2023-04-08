@@ -1,0 +1,14 @@
+---
+title: "Write_Up_Lab_3"
+author: "Diva Medina Camp"
+date: "2023-04-08"
+output: html_document
+---
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+

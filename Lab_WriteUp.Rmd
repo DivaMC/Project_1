@@ -1,5 +1,5 @@
 ---
-title: "Write_Up_Lab_3"
+title: "Lab_WriteUp"
 author: "Diva Medina Camp"
 date: "2023-04-08"
 output: html_document

@@ -4,3 +4,13 @@ deaths <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/ma
 
 # Extract the country names from the data frames
 countries <- unique(confirmed_cases$Country.Region)
+
+# Initialize empty lists for the sums of confirmed cases and deaths
+confirmed_sums <- list()
+death_sums <- list()
+
+# Calculate the sums of confirmed cases and deaths for each country
+for (country in countries) {
+  confirmed_sums[[country]] <- sum(confirmed_cases[confirmed_cases$Country.Region == country, -(1:4)])
+  death_sums[[country]] <- sum(deaths[deaths$Country.Region == country, -(1:4)])
+}

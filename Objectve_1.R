@@ -22,13 +22,13 @@ first_city_deaths <- covid_deaths$Province.State[which.max(covid_deaths$X1.22.20
 # Find greatest number of confirmed cases on first day
 
 max(covid_confirmations$X1.22.20)
-first_city_confirmations <- covid_confirmations$Province.State[which.max(covid_confirmations$X1.22.20)]
+first_city_confirmation <- covid_confirmations$Province.State[which.max(covid_confirmations$X1.22.20)]
 
 
 # Find and print city of origin
 
-if (first_city_deaths == first_city_confirmations) {
-  covid_city_origin <- first_city_confirmations
+if (first_city_deaths == first_city_confirmation) {
+  covid_city_origin <- first_city_confirmation
 }
 
 print(covid_city_origin)

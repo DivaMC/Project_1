@@ -15,8 +15,3 @@ print(recent_confirmations)
 # recent_confirmations <- paste(covid_confirmations$Province.State[which(covid_confirmations$X3.9.23 > covid_confirmations$X3.8.23)], 
 #                              covid_confirmations$Country.Region[which(covid_confirmations$X3.9.23 > covid_confirmations$X3.8.23)])
 
-
-
-
-      
-

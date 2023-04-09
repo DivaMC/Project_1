@@ -31,9 +31,9 @@ The World Health Organization has recently employed a new data science initiativ
 
 *CSIT-165* is a conglomerate comprised of two fabricated entities: *Global Health Union (GHU)* and *Private Diagnostic Laboratories (PDL)*. 
 Your and your partner's role is to play a data scientist from one of these two entities.
-
-
-
+  
+  
+  
 ### Data 
 Data for 2019 Novel Coronavirus is operated by the John Hopkins University Center for Systems Science and Engineering (JHU CSSE). 
 Data includes daily time series CSV summary tables, including confirmations, recoveries, and deaths. Country/region are countries/regions hat conform to World Health Organization (WHO). 
@@ -43,7 +43,7 @@ Date fields are stored in MM/DD/YYYY format.
 
 
 ### Project Objectives
-
+<br>
 
 #### Objective 1
 
@@ -84,9 +84,9 @@ if (first_city_deaths == first_city_confirmation) {
 print(covid_city_origin)
 
 ```
+<br>
 
-
-#### Objective 2
+####  Objective 2
 
 ```{r ob2}
 ## Most recent area to have a confirmed case
@@ -108,9 +108,9 @@ print(recent_confirmations)
 
 
 ```
-
-
-#### Objective 3
+<br>
+  
+####  Objective 3
 
 ```{r ob3}
 library ("geosphere")
@@ -157,9 +157,9 @@ for(i in 1:length(distance_from_origin$City)) {
 }
 
 ```
+<br>
 
-
-#### Objective 4
+####  Objective 4
 
 ```{r ob4}
 # Import the data for global confirmed cases
@@ -212,9 +212,9 @@ if (sum(!is.na(highest_risk$Confirmations)) > 0) {
 cat("The area with the highest risk score is", highest_risk$Country, "with a risk score of", highest_risk$RiskScore, "and", highest_risk$Confirmations, "confirmations.")
 
 ```
+<br>
 
-
-#### Objective 5
+####  Objective 5
 
 ```{r ob5}
 # Load the CSV files for COVID-19 data
@@ -253,6 +253,9 @@ kable(top_5_deaths)
 
 
 ```
+<br>
 
-### GitHub Log
+###  GitHub Log
+
+
 

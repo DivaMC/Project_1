@@ -1,0 +1,258 @@
+---
+title: Project 1
+author: "<br>Name: Diva Medina Camp <br>Partners: Manuel Ricardo Vargas, Wesley Newcomb. "
+date: "2023-04-09<br><br>"
+output: html_document
+df_print: paged
+
+---
+
+<style type="text/css">
+
+h1.title {
+  font-size: 38px;
+  text-align: center;
+}
+h4.author { /* Header 4 - and the author and data headers use this too  */
+    font-size: 18px;
+  text-align: center;
+}
+h4.date { /* Header 4 - and the author and data headers use this too  */
+  font-size: 18px;
+  text-align: center;
+}
+</style>
+
+
+
+### Background
+The World Health Organization has recently employed a new data science initiative, *CSIT-165*, that uses data science to characterize pandemic diseases. 
+*CSIT-165* disseminates data driven analyses to global decision makers.
+
+*CSIT-165* is a conglomerate comprised of two fabricated entities: *Global Health Union (GHU)* and *Private Diagnostic Laboratories (PDL)*. 
+Your and your partner's role is to play a data scientist from one of these two entities.
+
+
+
+### Data 
+Data for 2019 Novel Coronavirus is operated by the John Hopkins University Center for Systems Science and Engineering (JHU CSSE). 
+Data includes daily time series CSV summary tables, including confirmations, recoveries, and deaths. Country/region are countries/regions hat conform to World Health Organization (WHO). 
+Lat and Long refer to coordinates references for the user. 
+Date fields are stored in MM/DD/YYYY format.
+
+
+
+### Project Objectives
+
+
+#### Objective 1
+
+```{r ob1}
+# Get csv files from CSSEGISandData/COVID-19 database
+
+covid_confirmations <- read.csv("https://raw.githubusercontent.com/DivaMC/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", stringsAsFactors=FALSE)
+
+covid_deaths <- read.csv("https://raw.githubusercontent.com/DivaMC/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", stringsAsFactors=FALSE)
+
+covid_recoveries <- read.csv("https://raw.githubusercontent.com/DivaMC/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv", stringsAsFactors=FALSE)
+
+
+# Find greatest number of deaths on first day
+
+for(i in covid_deaths$X1.22.20) {
+  if(i > 0) {
+    print(i)
+  }
+}
+
+max(covid_deaths$X1.22.20)
+first_city_deaths <- covid_deaths$Province.State[which.max(covid_deaths$X1.22.20)]
+
+
+# Find greatest number of confirmed cases on first day
+
+max(covid_confirmations$X1.22.20)
+first_city_confirmation <- covid_confirmations$Province.State[which.max(covid_confirmations$X1.22.20)]
+
+
+# Find and print city of origin
+
+if (first_city_deaths == first_city_confirmation) {
+  covid_city_origin <- first_city_confirmation
+}
+
+print(covid_city_origin)
+
+```
+
+
+#### Objective 2
+
+```{r ob2}
+## Most recent area to have a confirmed case
+## Use a for loop, if statement, and subsets.
+
+recent_confirmations <- c()
+
+for (i in 1:nrow(covid_confirmations)) {
+  if (covid_confirmations$X3.9.23[i] > covid_confirmations$X3.8.23[i]) {
+    recent_confirmations <- c(recent_confirmations,covid_confirmations$Country.Region[i])
+   }
+}
+
+print(recent_confirmations)
+
+# R Solution
+# recent_confirmations <- paste(covid_confirmations$Province.State[which(covid_confirmations$X3.9.23 > covid_confirmations$X3.8.23)], 
+#                              covid_confirmations$Country.Region[which(covid_confirmations$X3.9.23 > covid_confirmations$X3.8.23)])
+
+
+```
+
+
+#### Objective 3
+
+```{r ob3}
+library ("geosphere")
+
+# How far away are the areas from objective 2 from where the first confirmed case(s) occurred?
+
+first_city_confirmation_index <- which.max(covid_confirmations$X1.22.20)
+
+area_df <- data.frame(Long = covid_confirmations$Long[which(covid_confirmations$X3.9.23 > covid_confirmations$X3.8.23)]
+                      ,Lat = covid_confirmations$Lat[which(covid_confirmations$X3.9.23 > covid_confirmations$X3.8.23)])
+
+area_df_matrix <- as.matrix(area_df)
+
+# First City Coordinates
+
+First_City_Coords <- data.frame(Long = covid_confirmations$Long[first_city_confirmation_index]
+                           ,Lat = covid_confirmations$Lat[first_city_confirmation_index]) 
+
+First_City_Coords_matrix <- as.matrix(First_City_Coords)
+
+# Find distance between cities
+# Use function distm
+# distm(x, y)
+
+dist <- distm(area_df_matrix, First_City_Coords_matrix)
+
+# Convert from meters to miles
+
+dist_miles <- round(dist/1609.34, 2)
+
+
+# Please print the following:
+# {recent region} is {distance in miles} away from {origin city, origin country}
+
+distance_from_origin <- data.frame(City = covid_confirmations$Province.State[which(covid_confirmations$X3.9.23 > covid_confirmations$X3.8.23)]
+                                   ,Country = covid_confirmations$Country.Region[which(covid_confirmations$X3.9.23 > covid_confirmations$X3.8.23)]
+                                   ,Distance = dist_miles)
+
+for(i in 1:length(distance_from_origin$City)) {
+  print(paste(distance_from_origin$City[i], distance_from_origin$Country[i], " is ", 
+              distance_from_origin$Distance[i], "miles away from", 
+              covid_confirmations$Province.State[first_city_confirmation_index], 
+              covid_confirmations$Country.Region[first_city_confirmation_index]))
+}
+
+```
+
+
+#### Objective 4
+
+```{r ob4}
+# Import the data for global confirmed cases
+confirmed_url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+confirmed_data <- read.csv(confirmed_url, header = TRUE, stringsAsFactors = FALSE)
+
+# Import the data for global deaths
+deaths_url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+deaths_data <- read.csv(deaths_url, header = TRUE, stringsAsFactors = FALSE)
+
+# Remove cruise ships from the confirmed cases data
+confirmed_data <- confirmed_data[!(confirmed_data$Lat == 0 | is.na(confirmed_data$Lat)), ]
+confirmed_data <- confirmed_data[!(confirmed_data$Long == 0 | is.na(confirmed_data$Long)), ]
+
+# Remove cruise ships from the deaths data
+deaths_data <- deaths_data[!(deaths_data$Lat == 0 | is.na(deaths_data$Lat)), ]
+deaths_data <- deaths_data[!(deaths_data$Long == 0 | is.na(deaths_data$Long)), ]
+
+# Filter both confirmed and deaths data to only include common countries
+common_countries <- intersect(confirmed_data$Country.Region, deaths_data$Country.Region)
+confirmed_cases <- confirmed_data[confirmed_data$Country.Region %in% common_countries, c("Country.Region", tail(names(confirmed_data), n = 1))]
+deaths <- deaths_data[deaths_data$Country.Region %in% common_countries, c("Country.Region", tail(names(deaths_data), n = 1))]
+
+# Calculate risk scores
+risk_scores <- round(100 * deaths[, 2] / confirmed_cases[, 2], 2)
+
+# Create data frame with country names and risk scores
+risk_scores_df <- data.frame(Country = confirmed_cases$Country.Region, RiskScore = risk_scores)
+
+# Sort risk scores by ascending order and select first row
+lowest_risk <- risk_scores_df[order(risk_scores_df$RiskScore), ][1, ]
+
+# If there are multiple areas with lowest risk, select the one with most confirmations
+if (sum(!is.na(lowest_risk$Confirmations)) > 0) {
+  lowest_risk <- lowest_risk[which(lowest_risk$Confirmations == max(lowest_risk$Confirmations, na.rm = TRUE)), ]
+}
+
+# Display the result
+cat("The area with the lowest risk score is", lowest_risk$Country, "with a risk score of", lowest_risk$RiskScore, "and", lowest_risk$Confirmations, "confirmations.")
+
+# Sort risk scores by descending order and select first row
+highest_risk <- risk_scores_df[order(-risk_scores_df$RiskScore), ][1, ]
+
+# If there are multiple areas with highest risk, select the one with most confirmations
+if (sum(!is.na(highest_risk$Confirmations)) > 0) {
+  highest_risk <- highest_risk[which(highest_risk$Confirmations == max(highest_risk$Confirmations, na.rm = TRUE)), ]
+}
+
+# Display the result
+cat("The area with the highest risk score is", highest_risk$Country, "with a risk score of", highest_risk$RiskScore, "and", highest_risk$Confirmations, "confirmations.")
+
+```
+
+
+#### Objective 5
+
+```{r ob5}
+# Load the CSV files for COVID-19 data
+confirmed_cases <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", stringsAsFactors = FALSE)
+deaths <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", stringsAsFactors = FALSE)
+
+# Extract the country names from the data frames
+countries <- unique(confirmed_cases$Country.Region)
+
+# Initialize empty lists for the sums of confirmed cases and deaths
+confirmed_sums <- list()
+death_sums <- list()
+
+# Calculate the sums of confirmed cases and deaths for each country
+for (country in countries) {
+  confirmed_sums[[country]] <- sum(confirmed_cases[confirmed_cases$Country.Region == country, -(1:4)])
+  death_sums[[country]] <- sum(deaths[deaths$Country.Region == country, -(1:4)])
+}
+
+# Convert the sums into data frames
+confirmed_df <- data.frame(Country = names(confirmed_sums), Confirmed = unlist(confirmed_sums))
+death_df <- data.frame(Country = names(death_sums), Deaths = unlist(death_sums))
+
+# Sort the data frames by the values of confirmed cases and deaths, respectively
+confirmed_df <- confirmed_df[order(-confirmed_df$Confirmed),]
+death_df <- death_df[order(-death_df$Deaths),]
+
+# Select the top 5 countries with the most confirmed cases and deaths
+top_5_confirmed <- head(confirmed_df, 5)
+top_5_deaths <- head(death_df, 5)
+
+# Convert the data frames into tables using the kable function
+library(knitr)
+kable(top_5_confirmed)
+kable(top_5_deaths)
+
+
+```
+
+### GitHub Log
+
